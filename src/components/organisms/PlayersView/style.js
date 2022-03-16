@@ -6,6 +6,10 @@ export const FlexStyle = styled.main`
     th, td {
     padding: 0.25rem;
     text-align:center;
+    z-index:3;
+    .MuiButton-root{
+        z-index:1;
+    }
 }
 tr.red th {
     background: red;
