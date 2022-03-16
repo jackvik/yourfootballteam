@@ -36,7 +36,10 @@ function Home() {
   
   const saveTeamHandler = () => {
     if (ValidationCheck(selectedPlayers,setError,setSaveText)) {
-      localStorage.setItem("my-team", JSON.stringify(selectedPlayers));
+      if (localStorage.getItem("myfootballTeam")) {
+        localStorage.removeItem("myfootballTeam");
+      }
+      localStorage.setItem("myfootballTeam", JSON.stringify(selectedPlayers));
     }
   };
   const setTeamDropdownData = (data) => {
@@ -128,6 +131,7 @@ function Home() {
           <SectionTitle>{MY_TEAM_SELECTION_TITLE}</SectionTitle>
           <div>
             <Button 
+              id='SaveBTN'
               variant={HomePageConstants.btnVariant} 
               aria-label={HomePageConstants.saveBtn} 
               disabled={selectedPlayers.length===0} 

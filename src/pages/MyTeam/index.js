@@ -5,8 +5,8 @@ function MyTeam() {
       
       const [teamPlayers,setTeamPlayers] = useState([]);
       useEffect(()=>{
-        if(localStorage.getItem("my-team")!=null){
-          setTeamPlayers(JSON.parse(localStorage.getItem("my-team")));
+        if(localStorage.getItem("myfootballTeam")!=null){
+          setTeamPlayers(JSON.parse(localStorage.getItem("myfootballTeam")));
         }
       },[setTeamPlayers])
     return (
