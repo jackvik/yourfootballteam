@@ -12,7 +12,11 @@ export const TableWrapper = styled.div`
       width:100%;
     }
 `
-export const SectionTitle = styled.h2``;
+export const SectionTitle = styled.h5`
+    font-size:18px;
+    font-weight:500;
+    margin:10px;
+`;
 export const FlexContainer = styled.div`
     height:calc(100vh - 7rem);
     display: flex;

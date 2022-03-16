@@ -1,17 +1,25 @@
 import React from 'react'
 import {Route,Routes} from 'react-router-dom'
-import Home from '../pages/Home';
-import MyTeam from '../pages/MyTeam';
 import  {pages} from '../common/constants';
-import Header from '../components/organisms/Header';
+import NotFound from '../pages/NotFound';
+const Home = React.lazy(()=>import('../pages/Home'));
+const MyTeam = React.lazy(()=>import('../pages/MyTeam'));
+const Header = React.lazy(()=>import('../components/organisms/Header'));
 function RoutePage() {
   return (
   <>
-  <Header/>
+  {<Header/>}
     <Routes>
-        <Route exact path={'/'} element={<Home/>}/>
-        <Route exact path={pages.HOME} element={<Home/>}/>
-        <Route exact path={pages.MYTEAM} element={<MyTeam/>}/>
+        <Route exact path={'/'} element={<React.Suspense fallback={<>...</>}>
+        <Home />
+      </React.Suspense>}/>
+        <Route exact path={pages.HOME} element={<React.Suspense fallback={<>...</>}>
+        <Home />
+      </React.Suspense>}/>
+        <Route exact path={pages.MYTEAM} element={<React.Suspense fallback={<>...</>}>
+        <MyTeam />
+      </React.Suspense>}/>
+      <Route path="*" element={<NotFound/>} />
     </Routes>
  </>)
   

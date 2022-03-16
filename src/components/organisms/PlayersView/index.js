@@ -27,7 +27,7 @@ function PlayersView(props) {
                         />
                     )
                 })}
-        </tbody></table>: <p>No Player Has Been Selected Yet</p>}
+        </tbody></table>: null}
     </FlexStyle>
   )
 }

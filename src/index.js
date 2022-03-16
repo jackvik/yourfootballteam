@@ -1,17 +1,19 @@
-import React from "react";
+import React,{Suspense} from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./routes/store";
 import { Provider } from "react-redux";
-import {BrowserRouter as Router} from 'react-router-dom'
+import {BrowserRouter as Router} from 'react-router-dom';
+
 ReactDOM.render(
+  <Suspense fallback={<p>Loading...</p>}>
   <Provider store={store}>
-  <Router>
-    <App />
-    </Router> 
-  </Provider>,
+      <Router>
+        <App />
+      </Router>
+    </Provider></Suspense>,
   document.getElementById("root")
 );
 

@@ -17,12 +17,11 @@ const Header = () => {
                 />
               </figure>
             </Link>
-            <h1>Football World Cup</h1>
+            <h5>Football World Cup</h5>
             <ul>
               <li>
                 <StyledLink
                   to={'/home'}
-                  activeClassName='header-link-active'
                   aria-label={'Navigation link for home'}
                 >
                   Home
@@ -31,7 +30,6 @@ const Header = () => {
               <li>
                 <StyledLink
                   to={'/myteam'}
-                  activeClassName='header-link-active'
                   aria-label={'Navigation link for My Team'}
                 >
                   MyTeam

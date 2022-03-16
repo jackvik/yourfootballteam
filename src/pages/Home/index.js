@@ -45,7 +45,7 @@ function Home() {
     return data?.sort((a, b) => (a.name > b.name ? 1 :b.name> a.name ? -1 : 0))
     .map((team) => {
       return (
-        <MenuItem key={team.id} value={team.id}><img src={team.crestUrl} width={20} height={15} />{team.name}</MenuItem>
+        <MenuItem key={team.id} value={team.id}><img loading="lazy" src={team.crestUrl} width={20} height={15} alt={'na'}/>{team.name}</MenuItem>
       )
     })
   }
@@ -98,7 +98,7 @@ function Home() {
       <FlexContainer>
         <FlexStyle>
         <SectionTitle>{ALL_PLAYERS_TITLE}</SectionTitle>
-          <FormControl sx={{m:1,minWidth: 120}}>
+          {teamsData.length===0?<p>Loading...</p>:<FormControl sx={{m:1,minWidth: 120}}>
             <InputLabel id={HomePageConstants.selectId}>{HomePageConstants.dropdownName}</InputLabel>
             <Select
             labelId={HomePageConstants.selectId}
@@ -110,8 +110,8 @@ function Home() {
             >
               {setTeamDropdownData(teamsData)}
             </Select>
-          </FormControl>
-          {teamPlayers.length>0 ?<TableWrapper><PlayersView 
+          </FormControl>}
+          <TableWrapper><PlayersView 
             isButton={true} 
             selectedPlayers={teamPlayers
               .filter(
@@ -123,7 +123,8 @@ function Home() {
             clickHandler={addButtonHandler} 
             type={HomePageConstants.addBtn} 
             dataSelector={HomePageConstants.teamSelector}/>
-            </TableWrapper> : <p>No data available</p>}
+            </TableWrapper>
+            {selectedCountry!=="" && teamPlayers.length===0 && (<h5>No Players in the team.</h5>)}
         </FlexStyle>
         <FlexStyle>
           <SectionTitle>{MY_TEAM_SELECTION_TITLE}</SectionTitle>

@@ -13,6 +13,11 @@ export const FlexStyle = styled.header`
       display:flex;
       width:100%;
       justify-content:space-between;
+      h5{
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.2;
+      }
     }
     ul{
       display:flex;
@@ -24,8 +29,8 @@ export const FlexStyle = styled.header`
       }
     }}
     img{
-      height:20px;
-      width:30px;
+      height:35px;
+      width:51px;
     }
   `;
 
