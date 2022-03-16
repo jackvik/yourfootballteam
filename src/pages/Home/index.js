@@ -1,18 +1,17 @@
 import React,{useState,useEffect} from 'react';
 import {getData} from '../../api/ApiManager';
 import {END_POINT_TEAMS_URL,END_POINT_PLAYERS_URL} from '../../api/APIEndPoints';
-import {dispatchData} from '../../common/utils/utils';
+import {dispatchData, ValidationCheck} from '../../common/utils/utils';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {SET_TEAMS_DATA,SET_MYTEAM_DATA,SET_PLAYERS_DATA} from '../../routes/action-types';
-import ListItem from '../../components/molecules/ListItem';
+import PlayersView from '../../components/organisms/PlayersView';
 import store from '../../routes/store';
 import {FlexStyle,FlexContainer,SectionTitle,TableWrapper}  from './style';
 import {useSelector} from 'react-redux';
-import MyTeam from '../MyTeam';
-import {positions,validationMessages,ALL_PLAYERS_TITLE,MY_TEAM_SELECTION_TITLE} from '../../common/constants';
+import {ALL_PLAYERS_TITLE,MY_TEAM_SELECTION_TITLE,HomePageConstants} from '../../common/constants';
 import Button from '@mui/material/Button';
 function Home() {
   const [teamsData,setTeamsData] = useState([]);
@@ -34,85 +33,10 @@ function Home() {
     setTeamsData(response.teams);
     dispatchData(SET_TEAMS_DATA,dataPayload);
   }
-  const validTeamSave = () => {
-    setAddError("");
-    setSaveText("");
-    if (!selectedPlayers.length) {
-      setAddError("");
-      return;
-    }
-    if (selectedPlayers.length > 16) {
-      setAddError(validationMessages.TEAM_COUNT_ERROR);
-      return false;
-    }
-
-    const groupByTeam = selectedPlayers.reduce((group, player) => {
-      if (group[player.country]) {
-        return {
-          ...group,
-          [player.country]: group[player.country] + 1,
-        };
-      }
-      return {
-        ...group,
-        [player.country]: 1,
-      };
-    }, {});
-    if (Object.values(groupByTeam).some((count) => count > 4)) {
-      setAddError(validationMessages.SAME_NATIONALITY_COUNT_ERROR);
-      return false;
-    }
-
-    const groupByPosition = selectedPlayers.reduce((group, player) => {
-      if (group[player.position]) {
-        return {
-          ...group,
-          [player.position]: group[player.position] + 1,
-        };
-      }
-      return {
-        ...group,
-        [player.position]: 1,
-      };
-    }, {});
-    if (
-      !groupByPosition[positions.ATTACKER] ||
-      groupByPosition[positions.ATTACKER] < 2
-    ) {
-      setAddError(validationMessages.ATTACKER_COUNT_ERROR);
-      return false;
-    }
-    if (
-      !groupByPosition[positions.GOALKEEPER] ||
-      groupByPosition[positions.GOALKEEPER] < 2
-    ) {
-      setAddError(validationMessages.GOALKEEPER_COUNT_ERROR);
-      return false;
-    }
-    if (
-      !groupByPosition[positions.DEFFENDER] ||
-      groupByPosition[positions.DEFFENDER] < 4
-    ) {
-      setAddError(validationMessages.DEFENDER_COUNT_ERROR);
-      return false;
-    }
-    if (
-      !groupByPosition[positions.MIDFIELDER] ||
-      groupByPosition[positions.MIDFIELDER] < 4
-    ) {
-      setAddError(validationMessages.MIDFIELDER_COUNT_ERROR);
-      return false;
-    }
-    
-
-    setAddError("");
-    setSaveText(validationMessages.SUCCESS);
-    return true;
-  };
-
+  
   const saveTeamHandler = () => {
     console.log("HEre");
-    if (validTeamSave()) {
+    if (ValidationCheck(selectedPlayers,setAddError,setSaveText)) {
       console.log("Bingo")
       localStorage.setItem("my-team", JSON.stringify(selectedPlayers));
     }
@@ -160,59 +84,70 @@ function Home() {
 
     dispatchData(SET_MYTEAM_DATA,payload);
   }
+
+  const removeButtonHandler = (player) => {
+    let modifiedData = [...selectedPlayers].filter((item) => item.id !== player.id);
+    let payload = {
+        isSuccess: true,
+        data: modifiedData
+    }
+    dispatchData(SET_MYTEAM_DATA,payload);
+}
+
   return (<>
-      
       <FlexContainer>
         <FlexStyle>
-        
         <SectionTitle>{ALL_PLAYERS_TITLE}</SectionTitle>
           <FormControl sx={{m:1,minWidth: 120}}>
-            <InputLabel id="footballcountry">Team</InputLabel>
+            <InputLabel id={HomePageConstants.selectId}>{HomePageConstants.dropdownName}</InputLabel>
             <Select
-            labelId="footballcountry"
-            id="country-select"
+            labelId={HomePageConstants.selectId}
+            id={HomePageConstants.selectLabelel}
             value={selectedCountry}
-            label="Country"
+            label={HomePageConstants.dropdownName}
             autoWidth
             onChange= {handleChange}
             >
               {setTeamDropdownData(teamsData)}
             </Select>
           </FormControl>
-          {teamPlayers.length>0 ? <TableWrapper><table>
-            <thead>
-              <tr>
-                <th>Team</th>
-                <th>Position</th>
-                <th>Name</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-            {teamPlayers?.filter((player) => !selectedPlayers.map((item) => item.id).includes(player.id)).sort((a, b) =>a.position > b.position ? 1 : b.position> a.position ? -1 : 0
-              ).map((player)=> {
-                return (
-                  <ListItem 
-                    key={player.id}
-                    player={player}
-                    type={'ADD'}
-                    onSelected={addButtonHandler}
-                  />
-                )
-              })}
-              </tbody>
-          </table></TableWrapper> : <p>No data available</p>}
+          {teamPlayers.length>0 ?<TableWrapper><PlayersView 
+            isButton={true} 
+            selectedPlayers={teamPlayers
+              .filter(
+                (player) => !selectedPlayers.map((sp) => sp.id).includes(player.id)
+              )
+              .sort((a, b) =>
+                a.position > b.position ? 1 : b.position > a.position ? -1 : 0
+              )} 
+            clickHandler={addButtonHandler} 
+            type={HomePageConstants.addBtn} 
+            dataSelector={HomePageConstants.teamSelector}/>
+            </TableWrapper> : <p>No data available</p>}
         </FlexStyle>
         <FlexStyle>
-        <SectionTitle>{MY_TEAM_SELECTION_TITLE}</SectionTitle>
-        <div><Button variant="contained" aria-label={'Save Team'} disabled={selectedPlayers.length===0} onClick={saveTeamHandler}>Save Team</Button>
-        <p>{hasError}</p></div>
-        <p>{saveText}</p>
-        <MyTeam/>
+          <SectionTitle>{MY_TEAM_SELECTION_TITLE}</SectionTitle>
+          <div>
+            <Button 
+              variant={HomePageConstants.btnVariant} 
+              aria-label={HomePageConstants.saveBtn} 
+              disabled={selectedPlayers.length===0} 
+              onClick={saveTeamHandler}>
+                {HomePageConstants.saveBtn}
+            </Button>
+          <p>{hasError}</p></div>
+          <p>{saveText}</p>
+          <TableWrapper>
+            <PlayersView 
+              isButton={true} 
+              selectedPlayers={selectedPlayers} 
+              clickHandler={removeButtonHandler} 
+              type={HomePageConstants.rmvBtn} 
+              dataSelector={HomePageConstants.myTeamSelector}/>
+          </TableWrapper>  
         </FlexStyle>
       </FlexContainer>
     </>
-    
   )
 }
 

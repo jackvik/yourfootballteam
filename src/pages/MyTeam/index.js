@@ -1,44 +1,19 @@
-import React from 'react'
-import {useSelector} from 'react-redux';
-import ListItem from '../../components/molecules/ListItem';
-import {dispatchData} from '../../common/utils/utils';
-import {SET_MYTEAM_DATA} from '../../routes/action-types';
+import React,{useState,useEffect} from 'react'
 import {FlexStyle} from './style';
+import PlayersView from '../../components/organisms/PlayersView';
 function MyTeam() {
-    let selectedPlayers = useSelector((state)=> state.myTeamData.data);
-    
-    const removeButtonHandler = (player) => {
-        let modifiedData = [...selectedPlayers].filter((item) => item.id !== player.id);
-        let payload = {
-            isSuccess: true,
-            data: modifiedData
+      
+      const [teamPlayers,setTeamPlayers] = useState([]);
+      useEffect(()=>{
+        if(localStorage.getItem("my-team")!=null){
+          setTeamPlayers(JSON.parse(localStorage.getItem("my-team")));
         }
-        dispatchData(SET_MYTEAM_DATA,payload);
-    }
+      },[setTeamPlayers])
     return (
     <FlexStyle>
-    {selectedPlayers.length >0?<table>
-    <thead>
-      <tr>
-        <th>Team</th>
-        <th>Position</th>
-        <th>Name</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-            {selectedPlayers?.sort((a, b) => a.position > b.position ? 1 : b.position > a.position ? -1 : 0
-                ).map((player) => {
-                    return (
-                        <ListItem 
-                        player={player}
-                        key={player.id+'MyTeam'}
-                        type={'REMOVE'}
-                        onSelected={removeButtonHandler}
-                        />
-                    )
-                })}
-        </tbody></table>: <p>No Player Has Been Selected Yet</p>}
+    {teamPlayers && teamPlayers.length >0 ? <PlayersView isButton={false} 
+    selectedPlayers={teamPlayers} 
+    dataSelector={"AdidasTeam"}/>:<p>Team has not been created yet</p>}
     </FlexStyle>
   )
 }

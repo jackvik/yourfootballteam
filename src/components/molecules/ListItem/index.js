@@ -10,7 +10,7 @@ const ListItem = (props) =>{
                 <td>{props.player.country}</td>
                 <td>{props.player?.position?.substring(0,3).toUpperCase()}</td>
                 <td>{props?.player?.name}</td>
-                <td><Button variant="contained" onClick={onClickHandler}>{props.type}</Button></td>
+                {props.isButton ?<td><Button variant="contained" onClick={onClickHandler}>{props.type}</Button></td> : null}
             </tr>
     )
 }

@@ -9,6 +9,20 @@ export const positions= {
     MIDFIELDER: "Midfielder",
     ATTACKER: "Attacker",
   }
+export const HomePageConstants = {
+    addBtn :'ADD',
+    rmvBtn :'REMOVE',
+    saveBtn : 'Save Team',
+    btnVariant : 'contained',
+    teamSelector : 'Team',
+    myTeamSelector : 'MyTeam',
+    selectId : 'countryList',
+    selectLabel : 'country-select',
+    dropdownName : 'Country',
+    noPlayerAvailable : 'No Player Available for this Team',
+}
+
+  
 export const ALL_PLAYERS_TITLE = "All Players"
 export const MY_TEAM_SELECTION_TITLE = "My Team Players";
 export const validationMessages={

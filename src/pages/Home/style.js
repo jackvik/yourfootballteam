@@ -8,18 +8,22 @@ export const FlexStyle = styled.section`
 export const TableWrapper = styled.div`
     max-height:80%;
     overflow-y:auto;
+    table{
+      width:100%;
+    }
 `
 export const SectionTitle = styled.h2``;
 export const FlexContainer = styled.div`
+    height:calc(100vh - 7rem);
     display: flex;
     flex-direction: row;
     flex-basis: 45%;
     justify-content: space-between;
     margin:5px 15px;
     table {
-  text-align: left;
-  position: relative;
-  border-collapse: collapse; 
+      text-align: left;
+      position: relative;
+      border-collapse: collapse; 
 }
 button{
     height:fit-content;

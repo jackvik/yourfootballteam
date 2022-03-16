@@ -7,6 +7,7 @@ export const FlexStyle = styled.header`
     top: 0;
     background-color: white;
     box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
+    height:6rem;
     nav{
       margin:5px 15px;
       display:flex;
