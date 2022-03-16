@@ -1,7 +1,9 @@
 # Adidas Football Team
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Description
 
+In this project, first run npm install to install the dependencies and then run npm start. Same can be refered below also. This repository is configured to be deployed to heroku. In this project, there are two pages, Home and MyTeam. On Home Page, user will get the dropdown of available teams and on selecting one country, available players will be populated and player can be added to create our team. On the same page, the selected players will be displayed which on Saving will be stored in local storage.MyTeam page will display data from localstorage is there is any available.
 ## Available Scripts
 
 In the project directory, you can run:
