@@ -1,0 +1,3 @@
+export const SET_TEAMS_DATA = 'SET_TEAMS_DATA';
+export const SET_MYTEAM_DATA = 'SET_MYTEAM_DATA';
+export const SET_PLAYERS_DATA = 'SET_PLAYERS_DATA';
