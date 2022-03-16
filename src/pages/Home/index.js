@@ -125,7 +125,7 @@ function Home() {
             type={HomePageConstants.addBtn} 
             dataSelector={HomePageConstants.teamSelector}/>
             </TableWrapper>
-            {selectedCountry!=="" && teamPlayers.length===0 && (<h5>No Players in the team.</h5>)}
+            {selectedCountry!=="" && teamPlayers.length===0 && (<h5>Loading....</h5>)}
         </FlexStyle>
         <FlexStyle>
           <SectionTitle>{MY_TEAM_SELECTION_TITLE}</SectionTitle>
