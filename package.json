@@ -48,6 +48,6 @@
   },
   "devDependencies": {
     "@mui/icons-material": "^5.5.1",
-    "postcss-loader": "^6.2.1",
+    "postcss-loader": "^6.2.1"
   }
 }
