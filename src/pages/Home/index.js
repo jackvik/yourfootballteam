@@ -18,7 +18,7 @@ function Home() {
   const [selectedCountry,setSelectedCountry] = useState("");
   const [teamPlayers,setTeamPlayers] = useState([]);
   let selectedPlayers = useSelector((state) => state.myTeamData.data);
-  const [hasError, setAddError] = useState("");
+  const [hasError, setError] = useState("");
   const [saveText, setSaveText] = useState("");
   useEffect(() => {
     getData(END_POINT_TEAMS_URL,successCallback,exceptionCallback)
@@ -35,9 +35,7 @@ function Home() {
   }
   
   const saveTeamHandler = () => {
-    console.log("HEre");
-    if (ValidationCheck(selectedPlayers,setAddError,setSaveText)) {
-      console.log("Bingo")
+    if (ValidationCheck(selectedPlayers,setError,setSaveText)) {
       localStorage.setItem("my-team", JSON.stringify(selectedPlayers));
     }
   };
@@ -115,7 +113,7 @@ function Home() {
             isButton={true} 
             selectedPlayers={teamPlayers
               .filter(
-                (player) => !selectedPlayers.map((sp) => sp.id).includes(player.id)
+                (player) => !selectedPlayers.map((item) => item.id).includes(player.id)
               )
               .sort((a, b) =>
                 a.position > b.position ? 1 : b.position > a.position ? -1 : 0

@@ -7,19 +7,19 @@ export const dispatchData = (type, data) => {
     });
 };
 
-export const ValidationCheck = (selectedPlayers,setAddError,setSaveText) => {
-    setAddError("");
+export const ValidationCheck = (selectedPlayers,setError,setSaveText) => {
+    setError("");
     setSaveText("");
     if (!selectedPlayers.length) {
-      setAddError("");
+      setError("");
       return;
     }
     if (selectedPlayers.length > 16) {
-      setAddError(validationMessages.TEAM_COUNT_ERROR);
+      setError(validationMessages.TEAM_COUNT_ERROR);
       return false;
     }
 
-    const groupByTeam = selectedPlayers.reduce((group, player) => {
+    const groupByCountry = selectedPlayers.reduce((group, player) => {
       if (group[player.country]) {
         return {
           ...group,
@@ -31,8 +31,8 @@ export const ValidationCheck = (selectedPlayers,setAddError,setSaveText) => {
         [player.country]: 1,
       };
     }, {});
-    if (Object.values(groupByTeam).some((count) => count > 4)) {
-      setAddError(validationMessages.SAME_NATIONALITY_COUNT_ERROR);
+    if (Object.values(groupByCountry).some((count) => count > 4)) {
+      setError(validationMessages.SAME_NATIONALITY_COUNT_ERROR);
       return false;
     }
 
@@ -52,33 +52,33 @@ export const ValidationCheck = (selectedPlayers,setAddError,setSaveText) => {
       !groupByPosition[positions.ATTACKER] ||
       groupByPosition[positions.ATTACKER] < 2
     ) {
-      setAddError(validationMessages.ATTACKER_COUNT_ERROR);
+      setError(validationMessages.ATTACKER_COUNT_ERROR);
       return false;
     }
     if (
       !groupByPosition[positions.GOALKEEPER] ||
       groupByPosition[positions.GOALKEEPER] < 2
     ) {
-      setAddError(validationMessages.GOALKEEPER_COUNT_ERROR);
+      setError(validationMessages.GOALKEEPER_COUNT_ERROR);
       return false;
     }
     if (
       !groupByPosition[positions.DEFFENDER] ||
       groupByPosition[positions.DEFFENDER] < 4
     ) {
-      setAddError(validationMessages.DEFENDER_COUNT_ERROR);
+      setError(validationMessages.DEFENDER_COUNT_ERROR);
       return false;
     }
     if (
       !groupByPosition[positions.MIDFIELDER] ||
       groupByPosition[positions.MIDFIELDER] < 4
     ) {
-      setAddError(validationMessages.MIDFIELDER_COUNT_ERROR);
+      setError(validationMessages.MIDFIELDER_COUNT_ERROR);
       return false;
     }
     
 
-    setAddError("");
+    setError("");
     setSaveText(validationMessages.SUCCESS);
     return true;
   };
